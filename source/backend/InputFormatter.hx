@@ -68,24 +68,101 @@ class InputFormatter {
 				return "#-";
 			case NUMPADPERIOD:
 				return "#.";
+			case NUMPADSLASH:
+				return "#/";
+			case BREAK:
+				return "Pause Brk";
+			case SCROLL_LOCK:
+				return "ScrLock";
 			case SEMICOLON:
-				return ";";
+				return switch(getKeyboardLayout()) {
+					case BRAZIL:
+						"Ç";
+					case LATAM | SPAIN:
+						"Ñ";
+					default:
+						";";
+				}
 			case COMMA:
 				return ",";
 			case PERIOD:
 				return ".";
-			//case SLASH:
-			//	return "/";
+			case MINUS:
+				return switch(getKeyboardLayout()) {
+					case LATAM | SPAIN:
+						"'";
+					default:
+						"-";
+				}
+			case PLUS:
+				return switch(getKeyboardLayout()) {
+					case LATAM:
+						"¿";
+					case SPAIN:
+						"¡";
+					case BRAZIL:
+						"=";
+					default:
+						"+";
+				}
+			case SLASH:
+				return switch(getKeyboardLayout()) {
+					case BRAZIL:
+						";";
+					case LATAM | SPAIN:
+						"-";
+					default:
+						"Slash";
+				}
 			case GRAVEACCENT:
-				return "`";
+				return switch(getKeyboardLayout()) {
+					case BRAZIL:
+						"'";
+					case LATAM:
+						"|";
+					default:
+						"Backtick";
+				}
 			case LBRACKET:
-				return "[";
-			//case BACKSLASH:
-			//	return "\\";
+				return switch(getKeyboardLayout()) {
+					case BRAZIL | LATAM:
+						"Accent";
+					case SPAIN:
+						"Backtick";
+					default:
+						"[";
+				}
+			case BACKSLASH:
+				return switch(getKeyboardLayout()) {
+					case BRAZIL:
+						"]";
+					case LATAM:
+						"}";
+					case SPAIN:
+						"Ç";
+					default:
+						"Backslash";
+				}
 			case RBRACKET:
-				return "]";
+				return switch(getKeyboardLayout()) {
+					case BRAZIL:
+						"[";
+					case LATAM | SPAIN:
+						"+";
+					default:
+						"]";
+				}
 			case QUOTE:
-				return "'";
+				return switch(getKeyboardLayout()) {
+					case BRAZIL:
+						"~";
+					case LATAM:
+						"{";
+					case SPAIN:
+						"Accent";
+					default:
+						"'";
+				}
 			case PRINTSCREEN:
 				return "PrtScrn";
 			case NONE:
@@ -224,4 +301,33 @@ class InputFormatter {
 				return arr.join(' ');
 		}
 	}
+
+	public static function getKeyboardLayout():KeyboardLayout {
+		return switch(ClientPrefs.data.language) {
+			case 'pt-BR':
+				BRAZIL;
+			case 'es-ES':
+				SPAIN;
+			case 'es-MX':
+				LATAM;
+			default:
+				ENGLISH;
+		}
+	}
+
+	public static function keyboardLayoutFromString(layout:String):KeyboardLayout {
+		return switch(layout) {
+			case 'brazil': BRAZIL;
+			case 'latam': LATAM;
+			case 'spain': SPAIN;
+			default: ENGLISH; //english
+		}
+	}
+}
+
+enum KeyboardLayout {
+	BRAZIL;
+	LATAM;
+	SPAIN;
+	ENGLISH;
 }
