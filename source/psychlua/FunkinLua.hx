@@ -536,7 +536,8 @@ class FunkinLua {
 					{
 						var originalTag:String = tag;
 						var variables = MusicBeatState.getVariables();
-						tag = 'tween_' + LuaUtils.formatVariable(tag);
+						var originalTag = tag;
+						tag = LuaUtils.formatVariable('tween_$tag');
 						variables.set(tag, FlxTween.tween(penisExam, values, duration, {
 							type: myOptions.type,
 							ease: myOptions.ease,
@@ -858,7 +859,7 @@ class FunkinLua {
 
 		Lua_helper.add_callback(lua, "getMidpointX", function(variable:String) {
 			var split:Array<String> = variable.split('.');
-			var obj:FlxSprite = LuaUtils.getObjectDirectly(split[0]);
+			var obj:FlxObject = LuaUtils.getObjectDirectly(split[0]);
 			if(split.length > 1) {
 				obj = LuaUtils.getVarInArray(LuaUtils.getPropertyLoop(split), split[split.length-1]);
 			}
@@ -868,7 +869,7 @@ class FunkinLua {
 		});
 		Lua_helper.add_callback(lua, "getMidpointY", function(variable:String) {
 			var split:Array<String> = variable.split('.');
-			var obj:FlxSprite = LuaUtils.getObjectDirectly(split[0]);
+			var obj:FlxObject = LuaUtils.getObjectDirectly(split[0]);
 			if(split.length > 1) {
 				obj = LuaUtils.getVarInArray(LuaUtils.getPropertyLoop(split), split[split.length-1]);
 			}
@@ -898,7 +899,7 @@ class FunkinLua {
 		});
 		Lua_helper.add_callback(lua, "getScreenPositionX", function(variable:String, ?camera:String = 'game') {
 			var split:Array<String> = variable.split('.');
-			var obj:FlxSprite = LuaUtils.getObjectDirectly(split[0]);
+			var obj:FlxObject = LuaUtils.getObjectDirectly(split[0]);
 			if(split.length > 1) {
 				obj = LuaUtils.getVarInArray(LuaUtils.getPropertyLoop(split), split[split.length-1]);
 			}
@@ -908,7 +909,7 @@ class FunkinLua {
 		});
 		Lua_helper.add_callback(lua, "getScreenPositionY", function(variable:String, ?camera:String = 'game') {
 			var split:Array<String> = variable.split('.');
-			var obj:FlxSprite = LuaUtils.getObjectDirectly(split[0]);
+			var obj:FlxObject = LuaUtils.getObjectDirectly(split[0]);
 			if(split.length > 1) {
 				obj = LuaUtils.getVarInArray(LuaUtils.getPropertyLoop(split), split[split.length-1]);
 			}
@@ -1123,11 +1124,12 @@ class FunkinLua {
 			return (obj != null && Std.isOfType(obj, FlxSprite));
 		});
 		Lua_helper.add_callback(lua, "luaTextExists", function(tag:String) {
-			var obj:FlxSprite = MusicBeatState.getVariables().get(tag);
+			var obj:FlxText = MusicBeatState.getVariables().get(tag);
 			return (obj != null && Std.isOfType(obj, FlxText));
 		});
 		Lua_helper.add_callback(lua, "luaSoundExists", function(tag:String) {
-			var obj:FlxSprite = MusicBeatState.getVariables().get(tag);
+			tag = LuaUtils.formatVariable('sound_$tag');
+			var obj:FlxSound = MusicBeatState.getVariables().get(tag);
 			return (obj != null && Std.isOfType(obj, FlxSound));
 		});
 
@@ -1158,7 +1160,7 @@ class FunkinLua {
 			}
 
 			var split:Array<String> = obj.split('.');
-			var object:FlxSprite = LuaUtils.getObjectDirectly(split[0]);
+			var object:FlxBasic = LuaUtils.getObjectDirectly(split[0]);
 			if(split.length > 1) {
 				object = LuaUtils.getVarInArray(LuaUtils.getPropertyLoop(split), split[split.length-1]);
 			}
@@ -1191,7 +1193,7 @@ class FunkinLua {
 			return false;
 		});
 		Lua_helper.add_callback(lua, "screenCenter", function(obj:String, pos:String = 'xy') {
-			var spr:FlxSprite = game.getLuaObject(obj);
+			var spr:FlxObject = game.getLuaObject(obj);
 
 			if(spr==null){
 				var split:Array<String> = obj.split('.');
