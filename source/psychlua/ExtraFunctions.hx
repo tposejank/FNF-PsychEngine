@@ -14,13 +14,13 @@ class ExtraFunctions
 		var lua:State = funk.lua;
 		
 		// Keyboard & Gamepads
-		Lua_helper.add_callback(lua, "keyboardJustPressed", function(name:String) return Reflect.getProperty(FlxG.keys.justPressed, name));
-		Lua_helper.add_callback(lua, "keyboardPressed", function(name:String) return Reflect.getProperty(FlxG.keys.pressed, name));
-		Lua_helper.add_callback(lua, "keyboardReleased", function(name:String) return Reflect.getProperty(FlxG.keys.justReleased, name));
+		Lua_helper.add_callback(lua, "keyboardJustPressed", function(name:String) return Reflect.getProperty(FlxG.keys.justPressed, name.toUpperCase()));
+		Lua_helper.add_callback(lua, "keyboardPressed", function(name:String) return Reflect.getProperty(FlxG.keys.pressed, name.toUpperCase()));
+		Lua_helper.add_callback(lua, "keyboardReleased", function(name:String) return Reflect.getProperty(FlxG.keys.justReleased, name.toUpperCase()));
 
-		Lua_helper.add_callback(lua, "anyGamepadJustPressed", function(name:String) return FlxG.gamepads.anyJustPressed(name));
-		Lua_helper.add_callback(lua, "anyGamepadPressed", function(name:String) FlxG.gamepads.anyPressed(name));
-		Lua_helper.add_callback(lua, "anyGamepadReleased", function(name:String) return FlxG.gamepads.anyJustReleased(name));
+		Lua_helper.add_callback(lua, "anyGamepadJustPressed", function(name:String) return FlxG.gamepads.anyJustPressed(name.toUpperCase()));
+		Lua_helper.add_callback(lua, "anyGamepadPressed", function(name:String) FlxG.gamepads.anyPressed(name.toUpperCase()));
+		Lua_helper.add_callback(lua, "anyGamepadReleased", function(name:String) return FlxG.gamepads.anyJustReleased(name.toUpperCase()));
 
 		Lua_helper.add_callback(lua, "gamepadAnalogX", function(id:Int, ?leftStick:Bool = true)
 		{
@@ -41,21 +41,21 @@ class ExtraFunctions
 			var controller = FlxG.gamepads.getByID(id);
 			if (controller == null) return false;
 
-			return Reflect.getProperty(controller.justPressed, name) == true;
+			return Reflect.getProperty(controller.justPressed, name.toUpperCase()) == true;
 		});
 		Lua_helper.add_callback(lua, "gamepadPressed", function(id:Int, name:String)
 		{
 			var controller = FlxG.gamepads.getByID(id);
 			if (controller == null) return false;
 
-			return Reflect.getProperty(controller.pressed, name) == true;
+			return Reflect.getProperty(controller.pressed, name.toUpperCase()) == true;
 		});
 		Lua_helper.add_callback(lua, "gamepadReleased", function(id:Int, name:String)
 		{
 			var controller = FlxG.gamepads.getByID(id);
 			if (controller == null) return false;
 
-			return Reflect.getProperty(controller.justReleased, name) == true;
+			return Reflect.getProperty(controller.justReleased, name.toUpperCase()) == true;
 		});
 
 		Lua_helper.add_callback(lua, "keyJustPressed", function(name:String = '') {
