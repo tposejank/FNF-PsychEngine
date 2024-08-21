@@ -1,5 +1,8 @@
 package states;
 
+#if CHECK_FOR_UPDATES
+import thx.semver.Version;
+#end
 import backend.WeekData;
 
 import flixel.input.keyboard.FlxKey;
@@ -86,10 +89,9 @@ class TitleState extends MusicBeatState
 				updateVersion = data.split('\n')[0].trim();
 				var curVersion:String = MainMenuState.psychEngineVersion.trim();
 				trace('version online: ' + updateVersion + ', your version: ' + curVersion);
-				if(updateVersion != curVersion) {
-					trace('versions arent matching!');
-					mustUpdate = true;
-				}
+				mustUpdate = compareVersions(updateVersion, curVersion);
+				if (mustUpdate) trace('versions arent matching!');
+				else trace('up to date');
 			}
 
 			http.onError = function (error) {
@@ -645,4 +647,12 @@ class TitleState extends MusicBeatState
 			skippedIntro = true;
 		}
 	}
+
+	#if CHECK_FOR_UPDATES
+	function compareVersions(online:String, local:String):Bool {
+		var onlineSemVer:Version = online;
+		var localSemVer:Version = local;
+		return onlineSemVer > localSemVer;
+	}
+	#end
 }
