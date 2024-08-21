@@ -90,7 +90,7 @@ class ExtraFunctions
 			return false;
 		});
 
-		Lua_helper.add_callback(lua, "isOfType", function(tag:String, cls:String):Bool {
+		funk.set("isOfType", function(tag:String, cls:String):Bool {
 			return Std.isOfType(LuaUtils.getObjectDirectly(tag), Type.resolveClass(cls));
 		});
 
